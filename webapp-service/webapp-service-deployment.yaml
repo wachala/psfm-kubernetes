@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: iosr-webapp-service
+  labels:
+    run: iosr-webapp-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iosr-webapp-service
+  template:
+    metadata:
+      labels:
+        app: iosr-webapp-service
+    spec:
+      containers:
+      - name: iosr-webapp-service
+        image: wachala/webapp-service:cuber-4
+        ports:
+        - containerPort: 8080
+          protocol: TCP

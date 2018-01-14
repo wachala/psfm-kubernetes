@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iosr-parking-lot-service
+spec:
+  selector:
+    app: iosr-parking-lot-service
+  ports:
+  - protocol: TCP
+    port: 5555
+    targetPort: 5555

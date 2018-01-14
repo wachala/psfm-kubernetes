@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: iosr-batch-service
+  labels:
+    run: iosr-batch-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iosr-batch-service
+  template:
+    metadata:
+      labels:
+        app: iosr-batch-service
+    spec:
+      containers:
+      - name: iosr-batch-service
+        image: wachala/batch-service:cuber-2
+        ports:
+        - containerPort: 8769
+          protocol: TCP

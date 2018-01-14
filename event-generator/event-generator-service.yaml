@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iosr-event-generator-service
+spec:
+  selector:
+    app: iosr-event-generator-service
+  ports:
+  - protocol: TCP
+    port: 8780
+    targetPort: 8780

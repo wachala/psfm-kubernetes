@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iosr-configuration-service
+spec:
+  selector:
+    app: iosr-configuration-service
+  ports:
+  - protocol: TCP
+    port: 7777
+    targetPort: 7777

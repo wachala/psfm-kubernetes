@@ -1,0 +1,129 @@
+version: '3.2'
+
+services:
+  activemq:
+    image: rmohr/activemq:latest
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+
+  configurationservice:
+    image: patrykks/iosr-configuration-service
+    ports:
+      - "7777:7777"
+
+  eureka:
+    image: patrykks/iosr-discovery-service
+    ports:
+      - "8761:8761"
+    depends_on:
+      - configurationservice
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+
+  zuul:
+    image: patrykks/iosr-zuul-service
+    ports:
+      - "8765:8765"
+    depends_on:
+      - eureka
+      - configurationservice
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  hystrixdashboard:
+    image: patrykks/iosr-hystrix-dashboard
+    ports:
+      - "8766:8766"
+    depends_on:
+      - eureka
+      - configurationservice
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  excelexportservice:
+    image: patrykks/iosr-excel-export-service
+    depends_on:
+      - eureka
+      - configurationservice
+      - zuul
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  parkinglotservice:
+    image: patrykks/iosr-parking-lot-service
+    depends_on:
+      - eureka
+      - configurationservice
+      - zuul
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  parkingspotwebapp:
+    image: patrykks/iosr-parking-spot-webapp
+    ports:
+      - "8080:8080"
+    depends_on:
+      - parkinglotservice
+      - eureka
+      - configurationservice
+      - zuul
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  adminservice:
+    image: patrykks/iosr-admin-service
+    ports:
+      - "1111:1111"
+    depends_on:
+      - eureka
+      - configurationservice
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  zipkin:
+    image: patrykks/iosr-zipkin-service
+    ports:
+      - "9411:9411"
+    depends_on:
+      - eureka
+      - configurationservice
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  batchservice:
+    image: patrykks/batch-service
+    ports:
+      - "8769:8769"
+    depends_on:
+      - parkinglotservice
+      - eureka
+      - configurationservice
+      - zuul
+      - activemq
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka 
+      ACTIVE_MQ_BROKER_URL: tcp://activemq:61616
+
+  eventgeneratorservice:
+    image: patrykks/event-generator-service
+    ports:
+      - "8780:8780"
+    depends_on:
+      - parkinglotservice
+      - eureka
+      - configurationservice
+      - zuul
+      - activemq
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+      ACTIVE_MQ_BROKER_URL: tcp://activemq:61616

@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iosr-excel-export-service
+spec:
+  selector:
+    app: iosr-excel-export-service
+  ports:
+  - protocol: TCP
+    port: 4444
+    targetPort: 4444

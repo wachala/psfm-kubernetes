@@ -1,0 +1,24 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: iosr-active-mq-service
+  labels:
+    run: iosr-active-mq-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iosr-active-mq-service
+  template:
+    metadata:
+      labels:
+        app: iosr-active-mq-service
+    spec:
+      containers:
+      - name: iosr-active-mq-service
+        image: rmohr/activemq:latest
+        ports:
+        - containerPort: 61616
+          protocol: TCP
+        - containerPort: 8161
+          protocol: TCP

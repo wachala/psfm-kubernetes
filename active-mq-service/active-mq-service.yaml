@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iosr-active-mq-service
+spec:
+  selector:
+    app: iosr-active-mq-service
+  ports:
+  - name: first
+    protocol: TCP
+    port: 61616
+    targetPort: 61616
+  - name: second
+    protocol: TCP
+    port: 8161
+    targetPort: 8161

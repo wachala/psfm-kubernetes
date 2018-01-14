@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: iosr-event-generator-service
+  labels:
+    run: iosr-event-generator-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iosr-event-generator-service
+  template:
+    metadata:
+      labels:
+        app: iosr-event-generator-service
+    spec:
+      containers:
+      - name: iosr-event-generator-service
+        image: wachala/event-generator:cuber
+        ports:
+        - containerPort: 8780
+          protocol: TCP

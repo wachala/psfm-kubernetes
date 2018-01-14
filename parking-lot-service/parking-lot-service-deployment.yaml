@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: iosr-parking-lot-service
+  labels:
+    run: iosr-parking-lot-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: iosr-parking-lot-service
+  template:
+    metadata:
+      labels:
+        app: iosr-parking-lot-service
+    spec:
+      containers:
+      - name: iosr-parking-lot-service
+        image: wachala/parking-lot-service:cuber
+        ports:
+        - containerPort: 5555
+          protocol: TCP

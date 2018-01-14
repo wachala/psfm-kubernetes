@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iosr-batch-service
+spec:
+  selector:
+    app: iosr-batch-service
+  ports:
+  - protocol: TCP
+    port: 8769
+    targetPort: 8769

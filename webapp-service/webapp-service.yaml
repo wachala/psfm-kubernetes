@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: iosr-webapp-service
+spec:
+  selector:
+    app: iosr-webapp-service
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

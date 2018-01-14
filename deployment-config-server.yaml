@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: iosr-configuration-service
+  labels:
+    run: iosr-configuration-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iosr-configuration-service
+  template:
+    metadata:
+      labels:
+        app: iosr-configuration-service
+    spec:
+      containers:
+      - name: iosr-configuration-service
+        image: patrykks/iosr-configuration-service:latest
+        ports:
+        - containerPort: 7777
+          protocol: TCP
